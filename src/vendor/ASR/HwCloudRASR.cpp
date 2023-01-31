@@ -53,7 +53,7 @@ void HwCloudRASR::onStart()
 {
 	auto uri = QString(paddle_url);
 	QNetworkRequest request;
-	auto urlStr = QString("wss://") +QString(paddle_url);
+	auto urlStr = QString("wss://") +uri;
 	QUrl url(urlStr);
 	qDebug() << url.toString();
 	request.setUrl(url);
@@ -100,7 +100,7 @@ void HwCloudRASR::onSendAudioMessage(const char *data, unsigned long size)
 void HwCloudRASR::onTextMessageReceived(const QString message)
 {
 	QJsonDocument doc(QJsonDocument::fromJson(message.toUtf8()));
-	auto output = doc["result"].toString();	
+	auto output = doc["result"].toString();
 	emit haveResult(output, ResultType_Middle);
 }
 

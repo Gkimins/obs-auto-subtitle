@@ -47,7 +47,7 @@ private slots:
 	void onError(QAbstractSocket::SocketError error);
 
 private:
-	QString paddle_url	
+	QString paddle_url;
 	QWebSocket ws;
 	bool running;
 };
