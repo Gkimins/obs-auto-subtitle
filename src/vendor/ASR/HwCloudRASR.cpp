@@ -32,7 +32,7 @@ along with this program; If not, see <https://www.gnu.org/licenses/>
 using namespace std::placeholders;
 
 HwCloudRASR::HwCloudRASR(const QString &paddle_url, QObject *parent)
-	: ASRBase(parent), Paddle_url(paddle_url)
+	: ASRBase(parent), paddle_url(paddle_url)
 {
 	connect(&ws, &QWebSocket::connected, this, &HwCloudRASR::onConnected);
 	connect(&ws, &QWebSocket::disconnected, this,
@@ -51,9 +51,9 @@ static const char *endMsg = "{\"name\": \"test.wav\",\"signal\": \"end\",\"nbest
 
 void HwCloudRASR::onStart()
 {
-	auto uri = QString(Paddle_url);
+	auto uri = QString(paddle_url);
 	QNetworkRequest request;
-	auto urlStr = QString("wss://") +QString(Paddle_url);
+	auto urlStr = QString("wss://") +QString(paddle_url);
 	QUrl url(urlStr);
 	qDebug() << url.toString();
 	request.setUrl(url);
@@ -115,16 +115,6 @@ void HwCloudRASR::onStop()
 {
 	ws.sendTextMessage(QString(endMsg).toUtf8());
 	ws.close();
-}
-
-QString HwCloudRASR::getProjectId()
-{
-	return project_id;
-}
-
-QString HwCloudRASR::getToken()
-{
-	return token;
 }
 
 HwCloudRASR::~HwCloudRASR()

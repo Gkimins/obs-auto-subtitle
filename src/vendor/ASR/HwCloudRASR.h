@@ -30,9 +30,6 @@ class HwCloudRASR : public ASRBase {
 	Q_OBJECT
 public:
 	HwCloudRASR(const QString &paddle_url, QObject *parent = nullptr);
-	QString getProjectId();
-	QString getToken();
-
 	~HwCloudRASR();
 
 signals:
@@ -50,9 +47,7 @@ private slots:
 	void onError(QAbstractSocket::SocketError error);
 
 private:
-	QString project_id;
-	QString region;
-	QString token;
+	QString paddle_url	
 	QWebSocket ws;
 	bool running;
 };
