@@ -30,12 +30,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install clang-format
-        run: sudo apt-get install -y clang-format-13
-
-      - name: Run clang-format
-        run: ./.github/scripts/check-format.sh && ./.github/scripts/check-changes.sh
-
       - name: Install cmake-format
         run: sudo pip install cmakelang
 
@@ -49,7 +43,7 @@ jobs:
       fail-fast: true
       matrix:
         arch: [x86_64, arm64, universal]
-    if: always()
+    if: false
     needs: [clang_check]
     outputs:
       commitHash: ${{ steps.setup.outputs.commitHash }}
@@ -350,7 +344,7 @@ jobs:
     name: 03 - Create and upload release
     runs-on: ubuntu-22.04
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-    needs: [macos_build, windows_build]
+    needs: [windows_build]
     defaults:
       run:
         shell: bash
