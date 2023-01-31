@@ -95,9 +95,6 @@ void HwCloudRASRBuilder::getDefaults(obs_data_t *settings){
 }
 
 void HwCloudRASRBuilder::refreshToken() {
-    if(username.isEmpty() || password.isEmpty() || domain_name.isEmpty() || region.isEmpty()) {
-        return;
-    }
     QUrl token_endpoint(QStringLiteral(HWCLOUD_IAM_TOKEN_API).arg(region));
     QNetworkRequest request(token_endpoint);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");

@@ -47,22 +47,16 @@ HwCloudRASR::HwCloudRASR(const QString &region, const QString &project_id,
 	running = false;
 }
 static const char *startMsg = "{\n"
-			      "  \"command\": \"START\",\n"
-			      "  \"config\":\n"
-			      "  {\n"
-			      "    \"audio_format\": \"pcm16k16bit\",\n"
-			      "    \"property\": \"chinese_16k_general\",\n"
-			      "    \"add_punc\": \"yes\",\n"
-			      "    \"vad_tail\": 300,\n"
-			      "    \"max_second\": 15, \n"
-			      "    \"interim_results\": \"yes\"\n"
-			      "  }\n"
+			      "  \"name\": \"test.wav\",\n"
+			      "  \"signal\": \"start\",\n"
+				  "  \"nbest\": 1,\n"
 			      "}";
 
 static const char *endMsg = "{\n"
-			    "  \"command\": \"END\",\n"
-			    "  \"cancel\": false\n"
-			    "}";
+			      "  \"name\": \"test.wav\",\n"
+			      "  \"signal\": \"end\",\n"
+				  "  \"nbest\": 1,\n"
+			      "}";
 
 void HwCloudRASR::onStart()
 {
