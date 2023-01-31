@@ -31,9 +31,8 @@ along with this program; If not, see <https://www.gnu.org/licenses/>
 
 using namespace std::placeholders;
 
-HwCloudRASR::HwCloudRASR(const QString &region, const QString &project_id,
-			 const QString &token, QObject *parent)
-	: ASRBase(parent), region(region), project_id(project_id), token(token)
+HwCloudRASR::HwCloudRASR(const QString &paddle_url, QObject *parent)
+	: ASRBase(parent), Paddle_url(paddle_url)
 {
 	connect(&ws, &QWebSocket::connected, this, &HwCloudRASR::onConnected);
 	connect(&ws, &QWebSocket::disconnected, this,
@@ -52,10 +51,9 @@ static const char *endMsg = "{\"name\": \"test.wav\",\"signal\": \"end\",\"nbest
 
 void HwCloudRASR::onStart()
 {
-	auto uri = QString(HWCLOUD_SIS_RASR_URI);
+	auto uri = QString(Paddle_url);
 	QNetworkRequest request;
-	auto urlStr = QString("wss://") +
-		      QString(HWCLOUD_SIS_ENDPOINT) + uri + region;
+	auto urlStr = QString("wss://") +QString(Paddle_url);
 	QUrl url(urlStr);
 	qDebug() << url.toString();
 	request.setUrl(url);
@@ -102,7 +100,7 @@ void HwCloudRASR::onSendAudioMessage(const char *data, unsigned long size)
 void HwCloudRASR::onTextMessageReceived(const QString message)
 {
 	QJsonDocument doc(QJsonDocument::fromJson(message.toUtf8()));
-	auto output = doc["result"].toString();
+	auto output = doc["result"].toString();	
 	emit haveResult(output, ResultType_Middle);
 }
 
