@@ -52,14 +52,13 @@ static const char *endMsg = "{\"name\": \"test.wav\",\"signal\": \"end\",\"nbest
 
 void HwCloudRASR::onStart()
 {
-	auto uri = QString(HWCLOUD_SIS_RASR_URI).arg(project_id);
+	auto uri = QString(HWCLOUD_SIS_RASR_URI);
 	QNetworkRequest request;
-	auto urlStr = QString("ws://") +
-		      QString(HWCLOUD_SIS_ENDPOINT).arg(region) + uri;
+	auto urlStr = QString("wss://") +
+		      QString(HWCLOUD_SIS_ENDPOINT) + uri + region;
 	QUrl url(urlStr);
 	qDebug() << url.toString();
 	request.setUrl(url);
-	request.setRawHeader("X-Auth-Token", token.toLocal8Bit());
 	ws.open(request);
 }
 
@@ -102,7 +101,7 @@ void HwCloudRASR::onSendAudioMessage(const char *data, unsigned long size)
 
 void HwCloudRASR::onTextMessageReceived(const QString message)
 {
-	QJsonDocument doc(QJsonDocument::fromJson(message.toUtf8()));			
+	QJsonDocument doc(QJsonDocument::fromJson(message.toUtf8()));
 	auto output = doc["result"].toString();
 	emit haveResult(output, ResultType_Middle);
 }

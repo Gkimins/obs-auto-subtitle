@@ -25,8 +25,8 @@ along with this program; If not, see <https://www.gnu.org/licenses/>
 
 #include "ASRBase.h"
 
-#define HWCLOUD_SIS_ENDPOINT "sis-ext.%1.myhuaweicloud.com"
-#define HWCLOUD_SIS_RASR_URI "/v1/%1/rasr/continue-stream"
+#define HWCLOUD_SIS_ENDPOINT "asr.253786.xyz"
+#define HWCLOUD_SIS_RASR_URI "/v1/"
 
 class HwCloudRASR : public ASRBase {
 	Q_OBJECT
