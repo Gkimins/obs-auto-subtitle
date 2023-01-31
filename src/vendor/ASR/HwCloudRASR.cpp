@@ -46,17 +46,9 @@ HwCloudRASR::HwCloudRASR(const QString &region, const QString &project_id,
 
 	running = false;
 }
-static const char *startMsg = "{\n"
-			      "  \"name\": \"test.wav\",\n"
-			      "  \"signal\": \"start\",\n"
-				  "  \"nbest\": 1,\n"
-			      "}";
+static const char *startMsg = "{\"name\": \"test.wav\",\"signal\": \"start\",\"nbest\": 1}";
 
-static const char *endMsg = "{\n"
-			      "  \"name\": \"test.wav\",\n"
-			      "  \"signal\": \"end\",\n"
-				  "  \"nbest\": 1,\n"
-			      "}";
+static const char *endMsg = "{\"name\": \"test.wav\",\"signal\": \"end\",\"nbest\": 1}";
 
 void HwCloudRASR::onStart()
 {
