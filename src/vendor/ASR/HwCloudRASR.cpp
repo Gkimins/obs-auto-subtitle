@@ -62,7 +62,7 @@ void HwCloudRASR::onStart()
 {
 	auto uri = QString(HWCLOUD_SIS_RASR_URI).arg(project_id);
 	QNetworkRequest request;
-	auto urlStr = QString("wss://") +
+	auto urlStr = QString("ws://") +
 		      QString(HWCLOUD_SIS_ENDPOINT).arg(region) + uri;
 	QUrl url(urlStr);
 	qDebug() << url.toString();
@@ -110,24 +110,9 @@ void HwCloudRASR::onSendAudioMessage(const char *data, unsigned long size)
 
 void HwCloudRASR::onTextMessageReceived(const QString message)
 {
-	QJsonDocument doc(QJsonDocument::fromJson(message.toUtf8()));
-	if (doc["resp_type"].toString() != "RESULT") {
-		if (doc["resp_type"].toString() == "ERROR") {
-			auto errorCb = getErrorCallback();
-			if (errorCb)
-				errorCb(ERROR_API, doc["error_msg"].toString());
-		}
-		qDebug() << message;
-		return;
-	}
-	auto segments = doc["segments"];
-	if (!segments.isArray()) {
-		return;
-	}
-	auto seg = segments[0];
-	auto is_final = seg["is_final"].toBool(true);
-	auto output = seg["result"]["text"].toString();
-	emit haveResult(output, is_final ? ResultType_End : ResultType_Middle);
+	QJsonDocument doc(QJsonDocument::fromJson(message.toUtf8()));			
+	auto output = doc["result"].toString();
+	emit haveResult(output, ResultType_Middle);
 }
 
 void HwCloudRASR::onResult(QString message, int type)
