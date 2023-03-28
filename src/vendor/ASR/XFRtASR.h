@@ -58,6 +58,7 @@ private:
 	QWebSocket ws;
 	bool running;
 	QUrl buildQuery();
+	QWebSocket resultWs;
 };
 
 #endif //OBS_AUTO_SUBTITLE_XFRTASR_H
