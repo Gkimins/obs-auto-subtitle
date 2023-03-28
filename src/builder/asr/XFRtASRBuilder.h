@@ -38,6 +38,7 @@ protected:
 private:
     QString appid;
     QString apikey;
+    QString reverurl;
     bool punc;
     QString pd;
     bool needBuild = false;

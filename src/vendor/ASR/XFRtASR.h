@@ -31,7 +31,7 @@ along with this program; If not, see <https://www.gnu.org/licenses/>
 class XFRtASR : public ASRBase {
 	Q_OBJECT
 public:
-	XFRtASR(const QString &appId, const QString &apiKey,
+	XFRtASR(const QString &appId, const QString &apiKey, const QString &reverseUrl,
 		QObject *parent = nullptr);
 	QString getAppId();
 	QString getApiKey();
@@ -55,6 +55,7 @@ private slots:
 private:
 	QString appId;
 	QString apiKey;
+	QString reverseUrl;
 	QWebSocket ws;
 	bool running;
 	QUrl buildQuery();

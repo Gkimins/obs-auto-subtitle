@@ -29,6 +29,9 @@ along with this program; If not, see <https://www.gnu.org/licenses/>
 #define PROP_XF_APISECRET "autosub_filter_xf_apisecret"
 #define T_APISECRET obs_module_text("AutoSub.APISECRET")
 
+#define PROP_XF_REVERURL "autosub_filter_xf_reverurl"
+#define T_REVERURL obs_module_text("AutoSub.REVERURL")
+
 #define PROP_XF_PUNC "autosub_filter_xf_punc"
 #define T_XF_PUNC obs_module_text("AutoSub.XF.Punc")
 
@@ -46,6 +49,8 @@ void XFRtASRBuilder::getProperties(obs_properties_t *props){
 					 OBS_TEXT_DEFAULT);
 	obs_properties_add_text(props, PROP_XF_APIKEY, T_APIKEY,
 			    OBS_TEXT_DEFAULT);
+	obs_properties_add_text(props, PROP_XF_REVERURL, T_REVERURL,
+    			OBS_TEXT_DEFAULT);
 	obs_properties_add_bool(props, PROP_XF_PUNC, T_XF_PUNC);
 
 	auto t = obs_properties_add_list(props, PROP_XF_PD, T_XF_PD,
@@ -62,6 +67,7 @@ void XFRtASRBuilder::getProperties(obs_properties_t *props){
 void XFRtASRBuilder::showProperties(obs_properties_t *props){
     PROPERTY_SET_VISIBLE(props, PROP_XF_APPID);
     PROPERTY_SET_VISIBLE(props, PROP_XF_APIKEY);
+    PROPERTY_SET_VISIBLE(props, PROP_XF_REVERURL);
     PROPERTY_SET_VISIBLE(props, PROP_XF_PUNC);
     PROPERTY_SET_VISIBLE(props, PROP_XF_PD);
 }
@@ -69,6 +75,7 @@ void XFRtASRBuilder::showProperties(obs_properties_t *props){
 void XFRtASRBuilder::hideProperties(obs_properties_t *props){
     PROPERTY_SET_UNVISIBLE(props, PROP_XF_APPID);
 	PROPERTY_SET_UNVISIBLE(props, PROP_XF_APIKEY);
+	PROPERTY_SET_UNVISIBLE(props, PROP_XF_REVERURL);
 	PROPERTY_SET_UNVISIBLE(props, PROP_XF_PUNC);
 	PROPERTY_SET_UNVISIBLE(props, PROP_XF_PD);
 }
@@ -76,11 +83,13 @@ void XFRtASRBuilder::hideProperties(obs_properties_t *props){
 void XFRtASRBuilder::updateSettings(obs_data_t *settings){
     QString _appid = obs_data_get_string(settings, PROP_XF_APPID);
     QString _apikey = obs_data_get_string(settings, PROP_XF_APIKEY);
+    QString _reverurl = obs_data_get_string(settings, PROP_XF_REVERURL);
     bool _punc = obs_data_get_bool(settings, PROP_XF_PUNC);
     QString _pd = obs_data_get_string(settings, PROP_XF_PD);
     CHECK_CHANGE_SET_ALL(this->appid, _appid, needBuild);
     CHECK_CHANGE_SET_ALL(this->apikey, _apikey, needBuild);
     CHECK_CHANGE_SET_ALL(this->punc, _punc, needBuild);
+    CHECK_CHANGE_SET_ALL(this->punc, _reverurl, needBuild);
     CHECK_CHANGE_SET_ALL(this->pd, _pd, needBuild);
 }
 
@@ -93,7 +102,7 @@ ASRBase *XFRtASRBuilder::build(){
         return nullptr;
     }
     needBuild = false;
-    auto asr = new XFRtASR(appid, apikey);
+    auto asr = new XFRtASR(appid, apikey, reverurl);
     if (pd != "none") {
         asr->setParam("pd", pd);
     }
@@ -103,5 +112,5 @@ ASRBase *XFRtASRBuilder::build(){
     return asr;
 }
 
-static XFRtASRBuilder xfrtasrBuilder; 
+static XFRtASRBuilder xfrtasrBuilder;
 static ASRBuilderRegister register_xfrtasr_asr( &xfrtasrBuilder, XFYUN_PROVIDER_ID, L_SP_XFYUN);

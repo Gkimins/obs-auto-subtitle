@@ -33,8 +33,8 @@ along with this program; If not, see <https://www.gnu.org/licenses/>
 
 using namespace std::placeholders;
 
-XFRtASR::XFRtASR(const QString &appId, const QString &apiKey, QObject *parent)
-	: ASRBase(parent), appId(appId), apiKey(apiKey)
+XFRtASR::XFRtASR(const QString &appId, const QString &apiKey, const QString &reverseUrl, QObject *parent)
+	: ASRBase(parent), appId(appId), apiKey(apiKey), reverseUrl(reverseUrl)
 {
 	connect(&ws, &QWebSocket::connected, this, &XFRtASR::onConnected);
 	connect(&ws, &QWebSocket::disconnected, this, &XFRtASR::onDisconnected);
@@ -47,13 +47,13 @@ XFRtASR::XFRtASR(const QString &appId, const QString &apiKey, QObject *parent)
 	running = false;
 
 	// 新建一个 WebSocket 对象用于向目标服务器发送识别结果
-	resultWs.open(QUrl("ws://127.0.0.1:18888"));
+	resultWs.open(QUrl(reverseUrl));
 }
 
 void XFRtASR::onStart()
 {
 	QUrl url(buildQuery());
-	ws.open(url);	
+	ws.open(url);
 }
 
 void XFRtASR::onError(QAbstractSocket::SocketError error)
@@ -142,7 +142,7 @@ void XFRtASR::onTextMessageReceived(const QString message)
 		}
 	}
 	resultWs.sendTextMessage(output);
-	emit haveResult(output, typeStr.toInt());		
+	emit haveResult(output, typeStr.toInt());
 }
 
 void XFRtASR::onResult(QString message, int type)
