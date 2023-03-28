@@ -45,12 +45,15 @@ XFRtASR::XFRtASR(const QString &appId, const QString &apiKey, QObject *parent)
 		SLOT(onError(QAbstractSocket::SocketError)));
 
 	running = false;
+
+	// 新建一个 WebSocket 对象用于向目标服务器发送识别结果
+	resultWs.open(QUrl("ws://127.0.0.1:18888"));
 }
 
 void XFRtASR::onStart()
 {
 	QUrl url(buildQuery());
-	ws.open(url);
+	ws.open(url);	
 }
 
 void XFRtASR::onError(QAbstractSocket::SocketError error)
@@ -138,7 +141,8 @@ void XFRtASR::onTextMessageReceived(const QString message)
 			}
 		}
 	}
-	emit haveResult(output, typeStr.toInt());
+	resultWs.sendTextMessage(output);
+	emit haveResult(output, typeStr.toInt());		
 }
 
 void XFRtASR::onResult(QString message, int type)
