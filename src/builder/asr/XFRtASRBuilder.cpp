@@ -89,7 +89,7 @@ void XFRtASRBuilder::updateSettings(obs_data_t *settings){
     CHECK_CHANGE_SET_ALL(this->appid, _appid, needBuild);
     CHECK_CHANGE_SET_ALL(this->apikey, _apikey, needBuild);
     CHECK_CHANGE_SET_ALL(this->punc, _punc, needBuild);
-    CHECK_CHANGE_SET_ALL(this->punc, _reverurl, needBuild);
+    CHECK_CHANGE_SET_ALL(this->reverurl, _reverurl, needBuild);
     CHECK_CHANGE_SET_ALL(this->pd, _pd, needBuild);
 }
 
