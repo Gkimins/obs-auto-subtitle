@@ -26,6 +26,7 @@ along with this program; If not, see <https://www.gnu.org/licenses/>
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QUrlQuery>
+#include <QDateTime>
 #include <functional>
 #include <utility>
 
@@ -149,8 +150,9 @@ void XFRtASR::onResult(QString message, int type)
 	auto callback = getResultCallback();
 	if (callback)
 	    if (type == 0) {
-	        qDebug() << "send result to " << message << " ...";
-	        resultWs.sendTextMessage(message);
+            QDateTime currentDateTime = QDateTime::currentDateTime();
+            QString timestampQStr = currentDateTime.toString(Qt::ISODate);
+	        resultWs.sendTextMessage(timestampQStr+":"+message);
 	    }
 		callback(message, type);
 }
