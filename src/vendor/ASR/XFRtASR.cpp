@@ -45,10 +45,9 @@ XFRtASR::XFRtASR(const QString &appId, const QString &apiKey, const QString &rev
 		SLOT(onError(QAbstractSocket::SocketError)));
 
 	running = false;
-
-	// 新建一个 WebSocket 对象用于向目标服务器发送识别结果
-	qDebug() << "WebSocket connecting to " << reverseUrl << " ...";
-	resultWs.open(QUrl(reverseUrl));
+	qDebug() << "WebSocket connecting to ";
+	resultWs.open(QUrl("ws://127.0.0.1:18888"));
+	qDebug() << reverseUrl;
 }
 
 void XFRtASR::onStart()
