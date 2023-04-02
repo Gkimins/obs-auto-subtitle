@@ -141,7 +141,6 @@ void XFRtASR::onTextMessageReceived(const QString message)
 			}
 		}
 	}
-	resultWs.sendTextMessage(output);
 	emit haveResult(output, typeStr.toInt());
 }
 
@@ -149,6 +148,9 @@ void XFRtASR::onResult(QString message, int type)
 {
 	auto callback = getResultCallback();
 	if (callback)
+	    if (type == 0) {
+	        resultWs.sendTextMessage(message);
+	    }
 		callback(message, type);
 }
 
