@@ -47,6 +47,7 @@ XFRtASR::XFRtASR(const QString &appId, const QString &apiKey, const QString &rev
 	running = false;
 
 	// 新建一个 WebSocket 对象用于向目标服务器发送识别结果
+	qDebug() << "WebSocket connecting to " << reverseUrl << " ...";
 	resultWs.open(QUrl(reverseUrl));
 }
 
@@ -149,6 +150,7 @@ void XFRtASR::onResult(QString message, int type)
 	auto callback = getResultCallback();
 	if (callback)
 	    if (type == 0) {
+	        qDebug() << "send result to " << message << " ...";
 	        resultWs.sendTextMessage(message);
 	    }
 		callback(message, type);
