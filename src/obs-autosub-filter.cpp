@@ -210,18 +210,22 @@ struct resample_info resample_output = {16000, AUDIO_FORMAT_16BIT,
 void autosub_filter_update(void *data, obs_data_t *settings)
 {
 	autosub_filter *s = (autosub_filter *)data;
+	//捕获原始OBS音频流
 	obs_audio_info ai;
 	if (!obs_get_audio_info(&ai))
 		throw std::string("Failed to get OBS audio info");
 	s->sample_rate = ai.samples_per_sec;
 	s->channels = ai.speakers;
+	//音频采样率
 	resample_info resample_input = {ai.samples_per_sec,
 					AUDIO_FORMAT_FLOAT_PLANAR, ai.speakers};
+	//锁定操作
 	s->resampler_update_lock.lock();
 	if (s->resampler != nullptr) {
 		audio_resampler_destroy(s->resampler);
 		s->resampler = nullptr;
 	}
+	//音频重采样
 	s->resampler =
 		audio_resampler_create(&resample_output, &resample_input);
 	s->resampler_update_lock.unlock();
@@ -264,12 +268,14 @@ void autosub_filter_update(void *data, obs_data_t *settings)
 	}
 	ASRBuilderBase *asrBuilder =
 		static_cast<ASRBuilderBase *>(ASRBuilders.getBuilder(provider));
+	//重新构建基类
 	std::shared_ptr<ASRBase> new_asr;
 	if (asrBuilder) {
+		//更新设置
 		asrBuilder->updateSettings(settings);
 		new_asr.reset(asrBuilder->build());
 	}
-	// Must updateSettings first then lock asr !
+	// 先锁定再更新，不然可能导致错误
 	s->lock_asr.lock();
 	if (new_asr) {
 		s->asr = new_asr;

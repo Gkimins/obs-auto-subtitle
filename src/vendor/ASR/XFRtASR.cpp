@@ -48,6 +48,8 @@ XFRtASR::XFRtASR(const QString &appId, const QString &apiKey, const QString &rev
 	running = false;
 	qDebug() << "WebSocket connecting to ";
 	resultWs.open(QUrl("ws://127.0.0.1:18888"));
+//	blog(LOG_INFO,"WebSocket connecting to ");
+	blog(LOG_DEBUG, "\"%s\"", reverseUrl);
 	qDebug() << reverseUrl;
 }
 
