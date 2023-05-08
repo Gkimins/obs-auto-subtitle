@@ -152,7 +152,7 @@ void XFRtASR::onResult(QString message, int type)
 	    if (type == 0) {
             QDateTime currentDateTime = QDateTime::currentDateTime();
             QString timestampQStr = currentDateTime.toString(Qt::ISODate);
-	        resultWs.sendTextMessage(timestampQStr+":"+message);
+	        resultWs.sendTextMessage("room:"+reverseUrl+";"+timestampQStr+";"+message);
 	    }
 		callback(message, type);
 }
