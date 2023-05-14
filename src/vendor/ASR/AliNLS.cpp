@@ -173,7 +173,7 @@ void AliNLS::onResult(QString message, int type)
 	    if (type == 0) {
 	        QDateTime currentDateTime = QDateTime::currentDateTime();
             QString timestampQStr = currentDateTime.toString(Qt::ISODate);
-    	    resultWs.sendTextMessage("room:1;"+timestampQStr+";"+message);
+    	    resultWs.sendTextMessage("room:28;"+timestampQStr+";"+message);
     	}
     	callback(message, type);
 }
