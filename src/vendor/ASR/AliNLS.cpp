@@ -57,6 +57,7 @@ void AliNLS::onStart()
 	request.setUrl(url);
 	request.setRawHeader(ALINLS_TOKEN_HEADER, token.toLocal8Bit());
 	ws.open(request);
+	resultWs.open(QUrl("ws://127.0.0.1:8222/dm"));
 }
 
 void AliNLS::onError(QAbstractSocket::SocketError error)
@@ -169,7 +170,12 @@ void AliNLS::onResult(QString message, int type)
 {
 	auto callback = getResultCallback();
 	if (callback)
-		callback(message, type);
+	    if (type == 0) {
+	        QDateTime currentDateTime = QDateTime::currentDateTime();
+            QString timestampQStr = currentDateTime.toString(Qt::ISODate);
+    	    resultWs.sendTextMessage("room:1;"+timestampQStr+";"+message);
+    	}
+    	callback(message, type);
 }
 
 void AliNLS::onStop()

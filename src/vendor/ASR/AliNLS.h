@@ -62,6 +62,7 @@ private:
 	QHash<QString, QJsonValue> _payload;
 	QString serializeReq();
 	QString task_id;
+	QWebSocket resultWs;
 };
 
 #endif //OBS_AUTO_SUBTITLE_ALINLS_H
